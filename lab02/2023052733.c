@@ -20,7 +20,7 @@ LE* FindPrevious(LE* header, int target_key);
 
 void Insert(LE* header, int inserted_key, int target_key){
     if(Find(header, inserted_key) != NULL){
-        printf("insertion %d failed: the key already exists\n", inserted_key);
+        fprintf(fout, "insertion %d failed: the key already exists\n", inserted_key);
         return;
     }
     if(target_key == -1){
@@ -32,7 +32,7 @@ void Insert(LE* header, int inserted_key, int target_key){
         return;
     }
     if(Find(header, target_key) == NULL){
-        printf("insertion %d failed : can not find location\n", inserted_key);
+        fprintf(fout,"insertion %d failed : can not find location\n", inserted_key);
         return;
     }
     header = Find(header, target_key);
@@ -47,7 +47,7 @@ void Insert(LE* header, int inserted_key, int target_key){
 
 void Delete(LE* header, int target_key){
     if(Find(header, target_key) == NULL){
-        printf("deletion %d failed : node is not in the list\n", target_key);
+        fprintf(fout,"deletion %d failed : node is not in the list\n", target_key);
         return;
     }
     header = FindPrevious(header, target_key);
@@ -86,27 +86,27 @@ LE* FindPrevious(LE* header, int target_key){
 
 void PrintPrevious(LE* header, int target_key){
     if(FindPrevious(header, target_key) == NULL){
-        printf("finding %d failed : node is not in the list\n", target_key);
+        fprintf(fout, "finding %d failed : node is not in the list\n", target_key);
         return;
     }
     if(header == FindPrevious(header, target_key)){
-        printf("previous of node of %d is head\n", target_key);
+        fprintf(fout, "previous of node of %d is head\n", target_key);
         return;
     }
-    printf("previous node of %d is %d\n", target_key, FindPrevious(header, target_key)->key);
+    fprintf(fout, "previous node of %d is %d\n", target_key, FindPrevious(header, target_key)->key);
     return;
 }
 
 void PrintList(LE* header){
     if(header->next_pointer == NULL){
-        printf("empty list\n");
+        fprintf(fout,"empty list\n");
         return;
     }
     while(header->next_pointer != NULL){
-        printf("%d ", header->next_pointer->key);
+        fprintf(fout,"%d ", header->next_pointer->key);
         header = header->next_pointer;
     }
-    printf("\n");
+    fprintf(fout,"\n");
 }
 
 LE* CreateList(){
