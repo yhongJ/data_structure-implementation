@@ -1,0 +1,35 @@
+deletion error 5
+7 is not in the tree
+2 
+deletion error 4
+1 is not in the tree
+deletion error 3
+5 
+5 
+2 is not in the tree
+9 
+deletion error 2
+deletion error 10
+32 
+9 is not in the tree
+23 
+deletion error 18
+23 is in the tree
+18 is not in the tree
+23 
+231 
+deletion error 21
+23 is not in the tree
+20 is not in the tree
+33 
+deletion error 8
+deletion error 9
+4 is not in the tree
+77 
+7 is not in the tree
+28 
+30 is not in the tree
+31 is not in the tree
+deletion error 31
+deletion error 30
+310 

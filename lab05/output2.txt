@@ -1,0 +1,8 @@
+10 
+deletion error 12
+deletion error 11
+deletion error 10
+5 
+10 is not in the tree
+9 is not in the tree
+32 
