@@ -19,6 +19,7 @@ void printInorder(BSTNode* current);
 void deleteTree(BSTNode* current);
 
 BSTNode* insertNode(BSTNode* current, int key){
+	//root부터 차례로 내려가면서 key가 들어갈 장소를 재귀적으로 탐색
 	if(current == NULL){
 		current = (BSTNode*)malloc(sizeof(BSTNode));
 		current->value = key;
@@ -26,38 +27,40 @@ BSTNode* insertNode(BSTNode* current, int key){
 		current->right = NULL;
 	}
 	else if(key < current->value){
-		current = insertNode(current->left, key);
+		//key가 value보다 작으면 current의 왼쪽으로 재귀
+		current->left = insertNode(current->left, key);
 	}
 	else if(key > current->value){
-		current = insertNode(current->right, key);
+		//key가 value보다 크면 current의 오른쪽으로 재귀
+		current->right = insertNode(current->right, key);
 	}
 	else{
 		printf("insertion error %d", key);
 	}
-    //if current == NULL일 경우 할당
-    //elif key < current->value 일 경우 recursive
-    //elif key > current->value 일 경우 recursive
-    //else 에러
-    //return current
     return current;
 }
-//오른쪽 자식 기준
+
 BSTNode* deleteNode(BSTNode* current, int key){
+	
 	if(current == NULL){
 		return current;
 	}
 	if(key < current->value){
-		current =  deleteNode(current->left, key);
+		//key가 value보다 작으면 current의 왼쪽으로 재귀
+		current->left =  deleteNode(current->left, key);
 	}
 	else if(key > current->value){
-		current = deleteNode(current->right, key);
+		//key가 value보다 크면 current의 오른쪽으로 재귀
+		current->right = deleteNode(current->right, key);
 	}
+	//삭제해야할 node를 찾았을때
 	else{
+		//child가 0개인 경우
 		if(current->right == NULL && current->left == NULL){
 			free(current);
 			return NULL;
 		}
-
+		//child가 1개인 경우
 		else if(current->right == NULL){
 			BSTNode* tmp = current->left;
 			free(current);
@@ -68,27 +71,23 @@ BSTNode* deleteNode(BSTNode* current, int key){
 			free(current);
 			return tmp;
 		}
-		else{
+		//child가 2개인 경우 -> 오른쪽 subtree의 가장 왼쪽 노드를 찾아서 replacement->child가 하나인 경우로 바뀜
+		else {
 			BSTNode* successor = current->right;
-			while(successor->left != NULL){
+			BSTNode* successorParent = current;
+			while (successor->left != NULL) {
+				successorParent = successor;
 				successor = successor->left;
 			}
-			int tmp = current->value;
-			current->value = successor->value;
-			successor->value = tmp;
-			return deleteNode(current-> right, key);
-			
+			current->value = successor->value; 
+			if (successorParent == current)
+				successorParent->right = deleteNode(successor, successor->value);
+			else
+				successorParent->left = deleteNode(successor, successor->value);
 		}
 	}
 	
-    //current == NULL일경우 return current
-    //if   key < current->value 일 경우 recursive
-    //elif key > current->value 일 경우 recursive
-    //else 의 경우 4가지
-    //  자식이 둘일 경우 -> 우측 자식의 가장 좌측 자식 찾기 -> 그 노드의 값으로 current->value 설정 -> 우측 자식의 가장 좌측 자식 삭제 recursive
-    //  자식이 하나일 경우 -> free current -> return 자식
-    //  자식이 없을 경우 -> free current -> return NULL
-    //return current
+
     return current;
 }
 
@@ -96,6 +95,7 @@ BSTNode* findNode(BSTNode* current, int key){
 	if(current == NULL){
 		return current;
 	}
+	//insert node와 같은 방식으로 root부터 시작해서 재귀적으로 탐색
 	if(key < current->value){
 		current = findNode(current->left, key);
 	}
@@ -105,12 +105,10 @@ BSTNode* findNode(BSTNode* current, int key){
 	else{
 		return current;
 	}
-    //current == NULL일경우 return current
-    //if   key < current->value 일 경우 current->left에 대해 recursive
-    //elif key > current->value 일 경우 current->right에 대해 recursive
-    //else return current
+    
 }
 void printInorder(BSTNode* current){
+	//inorder 순회과정을 재귀적으로 출력
 	if(current->left != NULL){
 		printInorder(current->left);
 	}
@@ -122,6 +120,7 @@ void printInorder(BSTNode* current){
 }
 
 void deleteTree(BSTNode* current){
+	//재귀적으로 left subtree삭제 -> right subtree삭제 -> node삭제
 	if(current->left != NULL){
 		deleteTree(current->left);
 	}
