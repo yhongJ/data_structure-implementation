@@ -20,24 +20,26 @@ int Pop(Heap* heap);
 void PrintHeap(Heap* heap);
 
 Heap* CreateHeap(int heapSize){
-    
+    //heap malloc, elements malloc, capcaity 및 size초기화
     Heap* heap = (Heap*)malloc(sizeof(Heap));
     heap->Capacity = heapSize;
     heap->Elements = (int*)malloc(sizeof(int) * heap->Capacity);
     heap->Size= 0;
     return heap;
-    // heap malloc
+    
 }
 void DeleteHeap(Heap* heap){
+    //int*형 elements 메모리 해제 후 heap메모리 해제
     free(heap->Elements);
     free(heap);
-    // heap free
 }
 void Push(Heap *heap, int value){
+    //size 1 증가, elements의 마지막 인덱스에 value삽입
     heap->Size++;
     heap->Elements[heap->Size - 1] =  value;
+    //idx: value의 현재 인덱스
     int idx = heap->Size - 1;
-
+    //부모노드와 비교해가며 부모가 자신보다 클 때까지 swap반복
     while(1){
         if(heap->Elements[idx] > heap->Elements[(idx - 1) / 2] ){
             int tmp = heap->Elements[idx];
@@ -50,19 +52,15 @@ void Push(Heap *heap, int value){
         }
     }
     return;
-    // heap->Elements 끝에 value 삽입
-    // 반복:
-    //     if 부모_value < 현재_value
-    //          swap (부모_pointer, 현재_pointer)
-    //          현재_pointer = 부모_pointer
+    
 }
 bool Find(Heap *heap, int value){
+    //인덱스 0부터 순차 탐색
     for(int i = 0; i < heap->Size; i++){
         if(heap->Elements[i] == value){
             return true;
         }
     }
-    // heap->Elements 에서 값 찾기
     return false;
 }
 int Pop(Heap* heap){
@@ -70,12 +68,16 @@ int Pop(Heap* heap){
         return -INF;
     }
     int tmp = heap->Elements[0];
+    //삭제할 값과 마지막 인덱스 값 swap
     heap->Elements[0] = heap->Elements[heap->Size - 1];
     heap->Elements[heap->Size - 1] = tmp;
+    //size -1
     heap->Size--;
+    //마지막 인덱스의 값 삭제->-INF로 설정
     heap->Elements[heap->Size] = -INF;
     int idx = 0;
     while(1){
+        //percolate down.아래로 탐색해가며 두 자식중 더큰 것과 비교하여 부모가 더 작으면 swap반복
         int largest = idx;
         int leftIdx = 2 * idx + 1;
         int rightIdx = 2 * idx + 2;
@@ -96,40 +98,24 @@ int Pop(Heap* heap){
             break;
         }
     }
+    //tmp에 저장해둔 삭제할 값 return
     return tmp;
     }
 
-    // heap->Elements[1]을 heap->Elements의 마지막 key와 변경
-    // Size 변경
-    // 반복:
-    //     자식_왼쪽_value = -INF
-    //     자식_오른쪽_value = -INF
-    //     if 자식_왼쪽_있음
-    //         자식_왼쪽_value 설정
-    //     if 자식_오른쪽_있음
-    //         자식_오른쪽_value 설정
-    //
-    //     if 자식_왼쪽_value < 자식_오른쪽_value
-    //     and 현재_value < 자식_오른쪽_value
-    //         swap(현재_pointer, 자식_오른쪽_pointer)
-    //         현재_pointer = 자식_오른쪽_pointer
-    //     elif 자식_오른쪽_value < 자식_왼쪽_value
-    //     and 현재_value < 자식_왼쪽_value
-    //         swap(현재_pointer, 자식_왼쪽_pointer)
-    //         현재_pointer = 자식_왼쪽_pointer
-    // return 삭제한 key
 
 void PrintHeap(Heap* heap){
+    //예외 처리: szie가 0이면 empty임을 알림
     if(heap->Size == 0){
         fprintf(fout, "print error : heap is empty\n");
         return;
     }
+    //인덱스 0부터 순차 출력
     for(int i = 0; i < heap->Size; i++){
         fprintf(fout, "%d ", heap->Elements[i]);
     }
     fprintf(fout, "\n");
     return;
-    // heap->Elements 순서대로 print
+
 }
 
 int main(int argc, char* argv[]){
