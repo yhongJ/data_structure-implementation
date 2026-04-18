@@ -1,1 +1,1 @@
-# I recommend not watching this..
+# for university data structure class
